@@ -1,4 +1,8 @@
-This is the Git Repository for GregTech-6
+# Introduction
+
+This is a unofficial fork of GregTech-6,which aims to VoidDweller ModPack(In development)
+DON'T report bugs to greg or GregTech-6 forums UNLESS you sure it exists on GregTech-6
+Possibly break saves of GregTech-6.So DON'T upgrade you saves without creating a backup.
 
 # License
 
@@ -8,10 +12,6 @@ according to the [CC0 1.0 Universal Public Domain Dedication](src/main/resources
 Any assets containing the [GregTech logo](src/main/resources/logos) or any
 derivative of it are licensed under the
 [Creative Commons Attribution-NonCommercial 4.0 International Public License](src/main/resources/LICENSE.logos).
-
-# Support
-
-You can use the Issue Tracker, or you can just use the [Forums](https://forum.mechaenetia.com/). Both ways will notify Greg at the very same time.
 
 # Dev Environment Setup
 

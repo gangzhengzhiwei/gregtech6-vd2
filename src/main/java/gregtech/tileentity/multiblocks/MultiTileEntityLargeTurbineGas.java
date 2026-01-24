@@ -42,15 +42,16 @@ import static gregapi.data.CS.*;
  * @author Gregorius Techneticies
  */
 public class MultiTileEntityLargeTurbineGas extends MultiTileEntityLargeTurbine {
-	public FluidTankGT mInputTank = new FluidTankGT(), mTanksOutput[] = new FluidTankGT[] {new FluidTankGT(), new FluidTankGT(), new FluidTankGT()};
+	public FluidTankGT mInputTank = new FluidTankGT();
+    public FluidTankGT[] mTanksOutput = new FluidTankGT[] {new FluidTankGT(), new FluidTankGT(), new FluidTankGT()};
 	public FluidTankGT[] mTanks = new FluidTankGT[] {mInputTank, mTanksOutput[0], mTanksOutput[1], mTanksOutput[2]};
-	public RecipeMap mRecipes = FM.Gas;
+	public RecipeMap[] mRecipes = new RecipeMap[] {FM.Gas, FM.Engine};
 	public Recipe mLastRecipe = null;
 	
 	@Override
 	public void readFromNBT2(NBTTagCompound aNBT) {
 		super.readFromNBT2(aNBT);
-		if (aNBT.hasKey(NBT_FUELMAP)) mRecipes = RecipeMap.RECIPE_MAPS.get(aNBT.getString(NBT_FUELMAP));
+		if (aNBT.hasKey(NBT_FUELMAP)) mRecipes = new RecipeMap[] {RecipeMap.RECIPE_MAPS.get(aNBT.getString(NBT_FUELMAP))};
 		for (int i = 0; i < mTanksOutput.length; i++)
 		mTanksOutput[i].readFromNBT(aNBT, NBT_TANK+"."+i).setCapacity(mEnergyIN.mMax*16);
 		mInputTank.readFromNBT(aNBT, NBT_TANK).setCapacity(mEnergyIN.mMax*4);
@@ -114,7 +115,8 @@ public class MultiTileEntityLargeTurbineGas extends MultiTileEntityLargeTurbine 
 			return;
 		}
 		if (!mStopped && mInputTank.has() && mTanksOutput[0].underHalf() && mTanksOutput[1].underHalf() && mTanksOutput[2].underHalf()) {
-			Recipe tRecipe = mRecipes.findRecipe(this, mLastRecipe, F, mEnergyIN.mMax, NI, mInputTank.AS_ARRAY, ZL_IS);
+			Recipe tRecipe = mRecipes[0].findRecipe(this, mLastRecipe, F, mEnergyIN.mMax, NI, mInputTank.AS_ARRAY, ZL_IS);
+			if(tRecipe == null) tRecipe = mRecipes[1].findRecipe(this, mLastRecipe, F, mEnergyIN.mMax, NI, mInputTank.AS_ARRAY, ZL_IS);
 			if (tRecipe != null) {
 				mLastRecipe = tRecipe;
 				if (tRecipe.mEUt < 0 && tRecipe.mDuration > 0) {
@@ -138,7 +140,11 @@ public class MultiTileEntityLargeTurbineGas extends MultiTileEntityLargeTurbine 
 		super.doConversion(aTimer);
 	}
 	
-	@Override protected IFluidTank getFluidTankFillable2(byte aSide, FluidStack aFluidToFill) {return !mStopped && mRecipes.containsInput(aFluidToFill, this, NI) ? mInputTank : null;}
+	@Override protected IFluidTank getFluidTankFillable2(byte aSide, FluidStack aFluidToFill) {
+		boolean tIsContains0 = mRecipes[0].containsInput(aFluidToFill, this, NI);
+		boolean tIsContains1 = mRecipes[1].containsInput(aFluidToFill, this, NI);
+		return !mStopped && (tIsContains0 || tIsContains1) ? mInputTank : null;
+	}
 	@Override protected IFluidTank[] getFluidTanks2(byte aSide) {return mTanks;}
 	
 	@Override

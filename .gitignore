@@ -55,3 +55,6 @@
 !/src/main/resources/**/*.mcmeta
 # Some old scripts in resources...
 !/src/main/resources/**/*.bat
+
+#Local file libs
+!/libs/*.jar

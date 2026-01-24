@@ -27,8 +27,10 @@ buildscript {
 }
 
 allprojects {
-	tasks.withType(JavaCompile) {
-		options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+	tasks.withType(JavaCompile).tap {
+		configureEach {
+			options.compilerArgs << "-Xlint:deprecation" << "-Xlint:unchecked"
+		}
 	}
 }
 
@@ -43,7 +45,7 @@ eclipse {
 def eclipseRuntimeClasspath = ""
 def eclipseRuntimeClasspathTemplate = "<listEntry value=\"&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry externalArchive=&quot;@@PATH@@&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#10;\"/>\n"
 
-task eclipseForgeWorkspace(type: Copy) {
+tasks.register('eclipseForgeWorkspace', Copy) {
 	doFirst {
 		sourceSets.main.runtimeClasspath.collect {
 			eclipseRuntimeClasspath += eclipseRuntimeClasspathTemplate.replaceAll('@@PATH@@', it.toString())
@@ -63,10 +65,12 @@ task eclipseForgeWorkspace(type: Copy) {
 }
 
 import org.apache.tools.ant.taskdefs.condition.Os
-task eclipseForgeProject {
+import org.codehaus.groovy.runtime.GStringImpl
+
+tasks.register('eclipseForgeProject') {
 	doLast {
-		if(!(new File("eclipse/Minecraft")).exists()) {
-			if(!Os.isFamily(Os.FAMILY_WINDOWS)) {
+		if (!(new File("eclipse/Minecraft")).exists()) {
+			if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
 				ant.symlink(resource: "../", link: "eclipse/Minecraft")
 			} else {
 				println("WINDOWS: Before loading this workspace with Eclipse, manually run this in an Elevated/Admin command prompt:")
@@ -89,12 +93,26 @@ idea{
 
 repositories {
 	maven {
+		name = "gtnh"
+		url = "https://nexus.gtnewhorizons.com/repository/public/"
+	}
+	maven {
 		name = "gt"
 		url = "https://gregtech.mechaenetia.com/"
 	}
 	maven {
 		name = "sonatype"
 		url = "https://oss.sonatype.org/content/repositories/snapshots/"
+	}
+	exclusiveContent {
+		forRepository {
+			maven {
+				url "https://cursemaven.com"
+			}
+		}
+		filter {
+			includeGroup "curse.maven"
+		}
 	}
 	//maven {
 	//	name = "forge"
@@ -184,18 +202,22 @@ dependencies {
 	//shade 'net.mostlyoriginal.artemis-odb:contrib-core:2.3.0'
 	//shade 'net.mostlyoriginal.artemis-odb:contrib-eventbus:2.3.0'
 	//shade 'net.fbridault.eeel:artemis-odb-eeel:1.2'
-	runtime 'org.apache.commons:commons-math3:3.2' // Needed for dev opis because it doesn't know how to specify dependencies properly
-	runtime 'org.jfree:jcommon:1.0.21'             // Needed for dev opis because it doesn't know how to specify dependencies properly
-	runtime 'org.jfree:jfreechart:1.0.17'          // Needed for dev opis because it doesn't know how to specify dependencies properly
-	runtime 'com.miglayout:miglayout-swing:4.2'    // Needed for dev opis because it doesn't know how to specify dependencies properly
-	runtime 'net.sf.opencsv:opencsv:2.3'           // Needed for dev opis because it doesn't know how to specify dependencies properly
-	runtime "io.netty-opis:Netty-opis:4.0.23"      // Needed for dev opis because it doesn't know how to specify dependencies properly
-	runtime "mcp.mobius.opis:Opis:1.2.5_1.7.10:dev"
-	compile "mcp.mobius.waila:Waila:1.5.11-RC2-NONEI_1.7.10:dev"
-	compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
-	compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
-	compile "codechicken:ForgeMultipart:1.7.10-1.2.0.347:dev"
-	compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
+
+	runtimeOnly 'curse.maven:unimixins-826970:7446239'         //+unimixins-all-1.7.10-0.2.1 Inter Integrated Graphics are not support mc1.7.10. Nedded for fix render bug
+	runtimeOnly files("libs/CoreTweaks-1.7.10-0.3.3.2+nomixin.jar")//I can't find the maven. Inter Integrated Graphics are not support mc1.7.10. Nedded for fix render bug
+
+    //runtimeOnly 'org.apache.commons:commons-math3:3.2' // Needed for dev opis because it doesn't know how to specify dependencies properly
+    //runtimeOnly 'org.jfree:jcommon:1.0.21'             // Needed for dev opis because it doesn't know how to specify dependencies properly
+    //runtimeOnly 'org.jfree:jfreechart:1.0.17'          // Needed for dev opis because it doesn't know how to specify dependencies properly
+    //runtimeOnly 'com.miglayout:miglayout-swing:4.2'    // Needed for dev opis because it doesn't know how to specify dependencies properly
+    //runtimeOnly 'net.sf.opencsv:opencsv:2.3'           // Needed for dev opis because it doesn't know how to specify dependencies properly
+    //runtimeOnly "io.netty-opis:Netty-opis:4.0.23"      // Needed for dev opis because it doesn't know how to specify dependencies properly
+    //runtimeOnly "mcp.mobius.opis:Opis:1.2.5_1.7.10:dev"
+    implementation "mcp.mobius.waila:Waila:1.5.11-RC2-NONEI_1.7.10:dev"
+    implementation "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
+    implementation "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+    implementation "codechicken:ForgeMultipart:1.7.10-1.2.0.347:dev"
+    implementation "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
 	compileOnly "inventorytweaks:InventoryTweaks:1.59-dev:deobf"
 	compileOnly "net.electricalage.eln:ElectricalAge-jrddunbr:1.16.3:dev"
 	compileOnly "net.sengir.forestry:forestry_1.7.10:4.2.16.64:dev"
@@ -360,7 +382,7 @@ runServer {
 	}
 }
 
-task buildInfo {
+tasks.register('buildInfo') {
 	def matcher = "v6.[0-9]*"
 	def cmdTag = "git describe --match ${matcher} --abbrev=0 --exact-match --dirty"
 	def procTag = cmdTag.execute()
@@ -413,10 +435,10 @@ processResources {
 	}
 }
 
-task generateBuildInfo(type: Copy) {
+tasks.register('generateBuildInfo', Copy) {
 	def templateContext = [
-		version: project.buildInfo.tag,
-		mcversion: project.minecraft.version,
+			version  : project.buildInfo.tag,
+			mcversion: project.minecraft.version,
 	]
 	inputs.properties templateContext
 	from 'src/template/java'
@@ -489,19 +511,19 @@ jar {
 	exclude 'gregtech/api/interfaces/tileentity/IGregTechTileEntity.class'
 }
 
-task sourceJar(type: Jar) {
+tasks.register('sourceJar', Jar) {
 	manifest {}
 	classifier = 'sources'
 	from sourceSets.main.allSource
 	exclude 'assets/**', 'logos/**'
 }
 
-task devJar(type: Jar) {
+tasks.register('devJar', Jar) {
 	manifest {
 		attributes(
-			'FMLAT': 'gregtech_at.cfg',
-			'FMLCorePluginContainsFMLMod': 'true',
-			'FMLCorePlugin': 'gregtech.asm.GT_ASM'
+				'FMLAT': 'gregtech_at.cfg',
+				'FMLCorePluginContainsFMLMod': 'true',
+				'FMLCorePlugin': 'gregtech.asm.GT_ASM'
 		)
 	}
 	configurations.shade.each { dep ->
@@ -527,7 +549,7 @@ task devJar(type: Jar) {
 //	exclude('gregtech/**')
 //}
 
-task changelog(type: Copy) {
+tasks.register('changelog', Copy) {
 	from('./CHANGELOG.md') {
 		rename '.*', "$archivesBaseName-$version-changelog.md"
 	}
@@ -535,7 +557,7 @@ task changelog(type: Copy) {
 	ext.output = new File("./build/libs/$archivesBaseName-$version-changelog.md")
 }
 
-task supporterlist(type: Copy) {
+tasks.register('supporterlist', Copy) {
 	from('./src/main/resources/supporterlist.txt') {
 		rename '.*', "$archivesBaseName-$version-supporterlist.txt"
 	}
@@ -543,7 +565,7 @@ task supporterlist(type: Copy) {
 	ext.output = new File("./build/libs/$archivesBaseName-$version-supporterlist.txt")
 }
 
-task supporterlistgold(type: Copy) {
+tasks.register('supporterlistgold', Copy) {
 	from('./src/main/resources/supporterlistgold.txt') {
 		rename '.*', "$archivesBaseName-$version-supporterlistgold.txt"
 	}
@@ -551,7 +573,7 @@ task supporterlistgold(type: Copy) {
 	ext.output = new File("./build/libs/$archivesBaseName-$version-supporterlistgold.txt")
 }
 
-task defaultConfigPack(type: Zip) {
+tasks.register('defaultConfigPack', Zip) {
 	doFirst {
 		mkdir "${project.buildDir}/${project.libsDirName}"
 	}
@@ -577,19 +599,19 @@ artifacts {
 }
 
 if (!hasProperty("mavenUsername")) {
-	ext.mavenUsername="${System.getenv().MAVEN_USERNAME}"
+	ext.mavenUsername= "${System.getenv().MAVEN_USERNAME}" as GStringImpl
 }
 
 if (!hasProperty("mavenPassword")) {
-	ext.mavenPassword="${System.getenv().MAVEN_PASSWORD}"
+	ext.mavenPassword= "${System.getenv().MAVEN_PASSWORD}" as GStringImpl
 }
 
 if (!hasProperty("mavenURL")) {
-	ext.mavenURL="${System.getenv().MAVEN_URL}"
+	ext.mavenURL= "${System.getenv().MAVEN_URL}" as GStringImpl
 }
 
 if ( !project.buildInfo.tag.contains("-dirty") && (System.getenv().ONLY_RELEASES!="true" || project.buildInfo.isRelease) ) {
-	task testIfUploadable {}
+	tasks.register('testIfUploadable') {}
 
 	uploadArchives {
 		dependsOn jar

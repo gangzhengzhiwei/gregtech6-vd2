@@ -560,5 +560,8 @@ public class Loader_Recipes_Chem implements Runnable {
 		RM.Drying       .addRecipe1(T, 16, 2000, OP.dust.mat(MT.OREMATS.Perlite   ,  1), NF, FL.DistW.make( 1000), OP.dust.mat(MT.Obsidian, 1));
 		for (OreDictMaterial tMat : ANY.Clay.mToThis)
 		RM.Drying       .addRecipe1(T, 16, 1000, OP.dust.mat(tMat                 ,  1), NF, FL.DistW.make(  500), OP.dust.mat(MT.Ceramic , 1));
+
+		//Annealed Copper
+		RM.Electrolyzer .addRecipe1(T, 42, 6000, OP.plateQuadruple.mat(MT.Cu, 1), FL.array(MT.BlueVitriol.liquid(2*U,F)), FL.array(MT.BlueVitriol.liquid(2*U,F),MT.GreenVitriol.liquid(1*U10,F),MT.WhiteVitriol.liquid(1*U10,F)),OP.plateQuadruple.mat(MT.AnnealedCopper,1),OM.dust(MT.CopperAnodeMud, 1*U9));
 	}
 }

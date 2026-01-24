@@ -1,5 +1,13 @@
 This is the most recent Changelog. It also contains some of the changes inside the >>>UPCOMING<<< Versions (most of the time). This is for 1.7.10 btw.
 
+6.0.1-vd2: (Not released yet)
+[ADDED] Copper Anode Mud, which is a by-product of Annealed Copper.
+[CHANGED] Annealed Copper now needs electrolyzer to product.
+[CHANGED] Electric Motor, Engine, Heater, Loom, Shifter, Mixer now has 100% efficiency.
+[CHANGED] Large Centrifuge, Large Coagulator Array, Large Electric Oven, Large Sluice, Large Crusher, Large Shredder, Large Squeezer, now has 90% efficiency.
+[CHANGED] Steam Turbines(Singleblock) now has 50% efficiency.Dynamo now has 93.75% efficiency.Diesel Engines now has 50% efficiency.
+[CHANGED] Gas Turbine now receives Engine recipes.
+[CHANGED] Deleted Adamantine Boiler, Steam Turbine, Dynamo, Gas Turbine.
 
 6.17.08: (Not released yet)
 Nothing (I tend to only add finished Stuff to the Changelog).
