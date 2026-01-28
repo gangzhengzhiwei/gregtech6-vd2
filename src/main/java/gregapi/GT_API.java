@@ -162,13 +162,16 @@ public class GT_API extends Abstract_Mod {
 		OP.oreDense         .addTextureSet(MD.GT, F);
 		OP.oreBedrock       .addTextureSet(MD.GT, F);
 		
-		OP.pipeTiny         .addTextureSet(MD.GT, F);
-		OP.pipeSmall        .addTextureSet(MD.GT, F);
-		OP.pipeMedium       .addTextureSet(MD.GT, F);
-		OP.pipeLarge        .addTextureSet(MD.GT, F);
-		OP.pipeHuge         .addTextureSet(MD.GT, F);
-		OP.pipeQuadruple    .addTextureSet(MD.GT, F);
-		OP.pipeNonuple      .addTextureSet(MD.GT, F);
+		OP.pipeTiny          .addTextureSet(MD.GT, F);
+		OP.pipeSmall         .addTextureSet(MD.GT, F);
+		OP.pipeMedium        .addTextureSet(MD.GT, F);
+		OP.pipeLarge         .addTextureSet(MD.GT, F);
+		OP.pipeHuge          .addTextureSet(MD.GT, F);
+		OP.pipeQuadruple     .addTextureSet(MD.GT, F);
+		OP.pipeQuadrupleSmall.addTextureSet(MD.GT, F);
+		OP.pipeQuadrupleTiny .addTextureSet(MD.GT, F);
+		OP.pipeNonuple       .addTextureSet(MD.GT, F);
+		OP.pipeNonupleTiny   .addTextureSet(MD.GT, F);
 		
 		OP.wire             .addTextureSet(MD.GT, F);
 		OP.foil             .addTextureSet(MD.GT, F);

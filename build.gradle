@@ -369,14 +369,14 @@ dependencies {
 }
 
 runClient {
-	jvmArgs "-Xmx4096m", "-Xms1024m"
+	jvmArgs "-Xmx2048m", "-Xms1024m"
 	if (project.hasProperty("appArgs")) {
 		args Eval.me(appArgs)
 	}
 }
 
 runServer {
-	jvmArgs "-Xmx4096m", "-Xms1024m"
+	jvmArgs "-Xmx2048m", "-Xms1024m"
 	if (project.hasProperty("appArgs")) {
 		args Eval.me(appArgs)
 	}

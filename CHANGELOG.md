@@ -1,6 +1,7 @@
 This is the most recent Changelog. It also contains some of the changes inside the >>>UPCOMING<<< Versions (most of the time). This is for 1.7.10 btw.
 
 6.0.1-vd2: (Not released yet)
+[ADDED] Small and Tiny Size Nonuple and Quadruple Fluid Pipes.
 [ADDED] Copper Anode Mud, which is a by-product of Annealed Copper.
 [CHANGED] Annealed Copper now needs electrolyzer to product.
 [CHANGED] Electric Motor, Engine, Heater, Loom, Shifter, Mixer now has 100% efficiency.

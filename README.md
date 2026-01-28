@@ -1,8 +1,10 @@
 # Introduction
 
 This is a unofficial fork of GregTech-6,which aims to VoidDweller ModPack(In development)
+
 DON'T report bugs to greg or GregTech-6 forums UNLESS you sure it exists on GregTech-6
-Possibly break saves of GregTech-6.So DON'T upgrade you saves without creating a backup.
+
+Will break saves of GregTech-6. NEVER UPGRADE YOUR GT6 SAVES!
 
 # License
 
