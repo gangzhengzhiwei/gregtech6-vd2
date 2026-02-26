@@ -297,7 +297,7 @@ public class Loader_Recipes_Chem implements Runnable {
 		RM.Electrolyzer .addRecipe2(T, 44, 1024, OP.dustSmall.mat(MT.C, 6), OP.dust .mat(MT.Al2O3,  5), FL.array(MT.Na3AlF6.liquid(U144, T), MT.AlF3.liquid(U72, T)), FL.array(MT.CO2.gas(U2* 9, F), MT.F.gas(7*U480, F)), OM.dust(MT.Al, U * 2));
 		RM.Electrolyzer .addRecipe2(T, 44, 1024, OP.dustSmall.mat(MT.C, 6), OP.ingot.mat(MT.Al2O3,  5), FL.array(MT.Na3AlF6.liquid(U144, T), MT.AlF3.liquid(U72, T)), FL.array(MT.CO2.gas(U2* 9, F), MT.F.gas(7*U480, F)), OM.dust(MT.Al, U * 2));
 		//Advanced aluminium
-		RM.Electrolyzer .addRecipe1(T,352, 1024, OP.dust .mat(MT.Al2O3,  5), NF, MT.O.liquid(U*3 , T), OM.dust(MT.Al, U * 2));
+		RM.Electrolyzer .addRecipe2(T,352, 1024, ST.tag(0),OP.dust     .mat(MT.Al2O3,  5), NF, MT.O.gas(U * 3 , T), OM.dust(MT.Al, U * 2));
 
 		RM.Electrolyzer .addRecipe2(T, 16,  512, ST.tag(0), OM.dust(MT.NaHSO4, U*7), NF, MT.H .gas(U  , T), OM.dust(MT.NaSO4, U*6));
 		RM.Electrolyzer .addRecipe2(T, 16,  512, ST.tag(0), OM.dust(MT.KHSO4 , U*7), NF, MT.H .gas(U  , T), OM.dust(MT.KSO4 , U*6));
@@ -564,6 +564,6 @@ public class Loader_Recipes_Chem implements Runnable {
 		RM.Drying       .addRecipe1(T, 16, 1000, OP.dust.mat(tMat                 ,  1), NF, FL.DistW.make(  500), OP.dust.mat(MT.Ceramic , 1));
 
 		//Annealed Copper
-		RM.Electrolyzer .addRecipe1(T, 42, 6000, OP.plateQuadruple.mat(MT.Cu, 1), FL.array(MT.BlueVitriol.liquid(2*U,F)), FL.array(MT.BlueVitriol.liquid(2*U,F),MT.GreenVitriol.liquid(1*U10,F),MT.WhiteVitriol.liquid(1*U10,F)),OP.plateQuadruple.mat(MT.AnnealedCopper,1),OM.dust(MT.CopperAnodeMud, 1*U9));
+		RM.Electrolyzer .addRecipe1(T, 16, 4096, OP.dust.mat(MT.Cu, 10), FL.array(MT.BlueVitriol.liquid(2*U,F)), FL.array(MT.BlueVitriol.liquid(2*U,F),MT.GreenVitriol.liquid(1*U10,F),MT.WhiteVitriol.liquid(1*U10,F)),OP.dust.mat(MT.AnnealedCopper,10),OM.dust(MT.CopperAnodeMud, 1*U9));
 	}
 }
