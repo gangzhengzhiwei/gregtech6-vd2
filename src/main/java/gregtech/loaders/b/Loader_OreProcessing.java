@@ -133,12 +133,14 @@ public class Loader_OreProcessing implements Runnable {
 		crushedCentrifugedTiny      .addListener(new OreProcessing_Maceration(dustTiny      , 1, ANTIMATTER.NOT));
 		
 		chemtube                    .addListener(new OreProcessing_GlassTube(-1, ANTIMATTER.NOT));
-		
-		plantGtBerry                .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
-		plantGtTwig                 .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
-		plantGtFiber                .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
-		plantGtWart                 .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
-		plantGtBlossom              .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
+
+		if (!ENABLE_GT_OREPLANTS) {
+			plantGtBerry                .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
+			plantGtTwig                 .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
+			plantGtFiber                .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
+			plantGtWart                 .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
+			plantGtBlossom              .addListener(new OreProcessing_PlantSqueezing(-1, ANTIMATTER.NOT));
+		}
 		
 		String tCategory = ConfigCategories.Recipes.gregtechrecipes + ".";
 		
