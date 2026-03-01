@@ -714,9 +714,10 @@ public class Loader_Recipes_Vanilla implements Runnable {
 		RM.ic2_compressor(                  dustTiny .mat(tBlaze, 9), plate    .mat(tBlaze, 1));
 		}
 		
-		
+		RM.Loom         .addRecipe1(T, 16, 4096, foil.mat(MT.Plastic, 1), ST.make(Items.string, 4, 0)); //Plastic to String
 		for (byte i = 0; i < 16; i++) {
 		RM.Shredder     .addRecipe1(T, 16,   16,  9000, ST.make(Blocks.wool, 1, i), i==0?ST.make(Items.string, 4, 0):plantGtFiber.mat(MT.DATA.Dye_Materials[15-i], 4));
+		RM.Loom         .addRecipe1(T, 16,   16, ST.make(Blocks.wool  , 1, i),i==0?ST.make(Items.string, 4, 0):plantGtFiber.mat(MT.DATA.Dye_Materials[15-i], 4));
 		CR.shaped(ST.make(Blocks.wool, 1, i), DEF, "XX", "XX", 'X', plantGtFiber.dat(MT.DATA.Dye_Materials[15-i]));
 		
 		if (i != DYE_INDEX_White) {
