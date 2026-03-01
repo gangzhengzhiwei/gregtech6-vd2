@@ -299,7 +299,7 @@ public class MultiTileEntitySmeltery extends TileEntityBase07Paintable implement
 		mDisplayedFluid = (tLightest == null || tLightest.mMaterial.mMeltingPoint > mTemperature ? -1 : tLightest.mMaterial.mID);
 
 		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tConversions;
-		if (mTemperature >= tTemperature) mEnergy -= LOSS_PER_TICK;
+		if (mTemperature > tTemperature) mEnergy -= LOSS_PER_TICK;
 		else mEnergy += LOSS_PER_TICK;
 		tConversions = mEnergy / tRequiredEnergy;
 		mEnergy -= tConversions * tRequiredEnergy;
