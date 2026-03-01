@@ -76,11 +76,11 @@ import static gregapi.data.CS.*;
  */
 public class MultiTileEntityCrucible extends TileEntityBase10MultiBlockBase implements ITileEntityCrucible, ITileEntityEnergy, ITileEntityGibbl, ITileEntityWeight, ITileEntityTemperature, ITileEntityMold, ITileEntityServerTickPost, ITileEntityEnergyDataCapacitor, IMultiBlockEnergy, IMultiBlockInventory, IMultiBlockFluidHandler, IFluidHandler {
 	public static int GAS_RANGE = 5, FLAME_RANGE = 5;
-	public static long MAX_AMOUNT = 16*3*3*3*U, KG_PER_ENERGY = 100;
+	public static long MAX_AMOUNT = 16*3*3*3*U, KG_PER_ENERGY = 100, LOSS_PER_TICK = 32;
 	public static double HEAT_RESISTANCE_BONUS = 1.10;
 	
 	protected boolean mAcidProof = F, mMeltDown = F;
-	protected byte mDisplayedHeight = 0, mCooldown = 100;
+	protected byte mDisplayedHeight = 0;
 	protected short mDisplayedFluid = -1;
 	protected long mEnergy = 0, mTemperature = DEF_ENV_TEMP, oTemperature = 0;
 	protected List<OreDictMaterialStack> mContent = new ArrayListNoNulls<>();
@@ -350,18 +350,13 @@ public class MultiTileEntityCrucible extends TileEntityBase10MultiBlockBase impl
 		mDisplayedFluid = (tLightest == null || tLightest.mMaterial.mMeltingPoint > mTemperature ? -1 : tLightest.mMaterial.mID);
 		if (mDisplayedFluid != tDisplayedFluid || mDisplayedHeight != tDisplayedHeight) updateClientData();
 		
-		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tConversions = mEnergy / tRequiredEnergy;
-		
-		if (mCooldown > 0) mCooldown--;
-		
-		if (tConversions != 0) {
-			mEnergy -= tConversions * tRequiredEnergy;
-			mTemperature += tConversions;
-			mCooldown = 100;
-		}
-		
-		if (mCooldown <= 0) {mCooldown = 10; if (mTemperature > tTemperature) mTemperature--; if (mTemperature < tTemperature) mTemperature++;}
-		
+		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tConversions;
+		if (mTemperature >= tTemperature) mEnergy -= LOSS_PER_TICK;
+		else mEnergy += LOSS_PER_TICK;
+		tConversions = mEnergy / tRequiredEnergy;
+		mEnergy -= tConversions * tRequiredEnergy;
+		mTemperature += tConversions;
+
 		mTemperature = Math.max(mTemperature, Math.min(200, tTemperature));
 		
 		if (mTemperature > getTemperatureMax(SIDE_INSIDE)) {
@@ -666,7 +661,7 @@ public class MultiTileEntityCrucible extends TileEntityBase10MultiBlockBase impl
 					addMaterialStacks(new ArrayListNoNulls<>(F, OM.stack(1*U, ((EntitySkeleton)aEntity).getSkeletonType() == 1 ? MT.BoneWither : MT.Bone), ((EntitySkeleton)aEntity).getSkeletonType() == 1 ? OM.stack(1*U, MT.Coal) : null), WD.envTemp(worldObj, xCoord, yCoord, zCoord));
 				} else if (aEntity instanceof EntityZombie) {
 					addMaterialStacks(new ArrayListNoNulls<>(F, OM.stack(1*U, MT.MeatRotten)), WD.envTemp(worldObj, xCoord, yCoord, zCoord));
-				} else if (aEntity instanceof EntityMooshroom || aEntity instanceof EntityCow || aEntity instanceof EntityHorse) {
+				} else if (aEntity instanceof EntityCow || aEntity instanceof EntityHorse) {
 					addMaterialStacks(new ArrayListNoNulls<>(F, OM.stack(3*U, MT.MeatRaw)), C+37);
 				} else if (aEntity instanceof EntityPig || aEntity instanceof EntitySheep || aEntity instanceof EntityWolf || aEntity instanceof EntitySquid) {
 					addMaterialStacks(new ArrayListNoNulls<>(F, OM.stack(2*U, MT.MeatRaw)), C+37);

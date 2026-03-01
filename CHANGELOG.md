@@ -1,9 +1,10 @@
 This is the most recent Changelog. It also contains some of the changes inside the >>>UPCOMING<<< Versions (most of the time). This is for 1.7.10 btw.
 
-6.0.2-vd2: (Not released yet) Original gregtech-6.17.07
+6.0.2-vd2: Original gregtech-6.17.07
 [ADDED] Alumina(Al2O3) now can be Electrolyze to Aluminium dust and Oxygen gas, with HV-tier voltage and about Four times energy.
 [CHANGED] Annealed copper is now made from copper Dust, not Quadruple plate.
 [CHANGED] Aluminium is now require Carbon dust, not Coal, Coke or Other thing.
+[CHANGED] Crucibles now has a fixed energy loss. For large crucibles it is 32GU/t, for singleblock it is 4GU/t.
 [CHANGED] GT OreBush, OreBerry, Twig, Fiber, Wart, Blossom now can be disabled via Enable_GT_OrePlants config in config/gregtech/gregtech.cfg: general, and default is true.
 
 6.0.1-vd2:

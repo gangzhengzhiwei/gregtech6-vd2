@@ -74,11 +74,11 @@ import static gregapi.data.CS.*;
  */
 public class MultiTileEntitySmeltery extends TileEntityBase07Paintable implements ITileEntityCrucible, ITileEntityEnergy, ITileEntityGibbl, ITileEntityWeight, ITileEntityTemperature, ITileEntityMold, ITileEntityServerTickPost, IMTE_RemovedByPlayer, IMTE_OnEntityCollidedWithBlock, IMTE_GetCollisionBoundingBoxFromPool, IMTE_AddToolTips, IMTE_OnPlaced {
 	public static int GAS_RANGE = 3, FLAME_RANGE = 3;
-	public static long MAX_AMOUNT = 16*U, KG_PER_ENERGY = 100;
+	public static long MAX_AMOUNT = 16*U, KG_PER_ENERGY = 100, LOSS_PER_TICK = 4;
 	public static double HEAT_RESISTANCE_BONUS = 1.25;
 	
 	protected boolean mAcidProof = F, mMeltDown = F;
-	protected byte mDisplayedHeight = 0, oDisplayedHeight = 0, mCooldown = 100;
+	protected byte mDisplayedHeight = 0, oDisplayedHeight = 0;
 	protected short mDisplayedFluid = -1, oDisplayedFluid = -1;
 	protected long mEnergy = 0, mTemperature = DEF_ENV_TEMP, oTemperature = 0;
 	protected List<OreDictMaterialStack> mContent = new ArrayListNoNulls<>();
@@ -297,18 +297,13 @@ public class MultiTileEntitySmeltery extends TileEntityBase07Paintable implement
 		
 		mDisplayedHeight = (byte)UT.Code.scale(tTotal, MAX_AMOUNT, 255, F);
 		mDisplayedFluid = (tLightest == null || tLightest.mMaterial.mMeltingPoint > mTemperature ? -1 : tLightest.mMaterial.mID);
-		
-		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tConversions = mEnergy / tRequiredEnergy;
-		
-		if (mCooldown > 0) mCooldown--;
-		
-		if (tConversions != 0) {
-			mEnergy -= tConversions * tRequiredEnergy;
-			mTemperature += tConversions;
-			mCooldown = 100;
-		}
-		
-		if (mCooldown <= 0) {mCooldown = 10; if (mTemperature > tTemperature) mTemperature--; if (mTemperature < tTemperature) mTemperature++;}
+
+		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tConversions;
+		if (mTemperature >= tTemperature) mEnergy -= LOSS_PER_TICK;
+		else mEnergy += LOSS_PER_TICK;
+		tConversions = mEnergy / tRequiredEnergy;
+		mEnergy -= tConversions * tRequiredEnergy;
+		mTemperature += tConversions;
 		
 		mTemperature = Math.max(mTemperature, Math.min(200, tTemperature));
 		
