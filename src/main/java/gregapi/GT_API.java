@@ -151,7 +151,11 @@ public class GT_API extends Abstract_Mod {
 			e.printStackTrace(ERR);
 			ERR.println("======================================================================================================");
 		}
-		
+		//I got a crash for putting this in OP.java
+		for (byte i = 0; i < 15; i++) { // the "white fiber" is vanilla string
+			OP.plantGtFiber.forceItemGeneration(MT.DATA.Dye_Materials[i]); //We need generate Dye fibers. See gregtech.loaders.c.Loader_Recipes_Vanilla.run(Loader_Recipes_Vanilla.java:719)
+		}
+
 		IconsGT.INDEX_BLOCK_GAS       = TextureSet.addToAll(MD.GT.mID, F, "gas");
 		IconsGT.INDEX_BLOCK_PLASMA    = TextureSet.addToAll(MD.GT.mID, F, "plasma");
 		IconsGT.INDEX_BLOCK_MOLTEN    = TextureSet.addToAll(MD.GT.mID, F, "molten");
