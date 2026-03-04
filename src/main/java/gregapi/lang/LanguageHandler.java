@@ -45,6 +45,7 @@ import static gregapi.data.CS.*;
 public class LanguageHandler {
 	public static Configuration sLangFile;
 	public static boolean sUseFile = F;
+	public static String sLangFileLanguage = "en_US";
 	
 	private static final HashMap<String, String> TEMPMAP = new HashMap<>(), BUFFERMAP = new HashMap<>(), BACKUPMAP = new HashMap<>();
 	private static boolean mWritingEnabled = F;
@@ -79,7 +80,7 @@ public class LanguageHandler {
 					Property tProperty = sLangFile.get("LanguageFile", tEntry.getKey(), tEntry.getValue());
 					TEMPMAP.put(tEntry.getKey()        , sUseFile?tProperty.getString():tEntry.getValue());
 					TEMPMAP.put(tEntry.getKey()+".name", sUseFile?tProperty.getString():tEntry.getValue());
-					LanguageRegistry.instance().injectLanguage("en_US", TEMPMAP);
+					LanguageRegistry.instance().injectLanguage(sLangFileLanguage, TEMPMAP);
 					TEMPMAP.clear();
 				}
 				BUFFERMAP.clear();
@@ -88,7 +89,7 @@ public class LanguageHandler {
 			tSave |= tProperty.wasRead();
 			TEMPMAP.put(aKey        , sUseFile?tProperty.getString():aEnglish);
 			TEMPMAP.put(aKey+".name", sUseFile?tProperty.getString():aEnglish);
-			LanguageRegistry.instance().injectLanguage("en_US", TEMPMAP);
+			LanguageRegistry.instance().injectLanguage(sLangFileLanguage, TEMPMAP);
 			TEMPMAP.clear();
 		}
 		if (tSave && mWritingEnabled) sLangFile.save();

@@ -237,15 +237,10 @@ public class GT_API extends Abstract_Mod {
 	@Mod.EventHandler
 	public void onPreLoad(FMLPreInitializationEvent aEvent) {
 		DirectoriesGT.CONFIG = aEvent.getModConfigurationDirectory();
-		
-		DirectoriesGT.CONFIG_GT = new File(DirectoriesGT.CONFIG, "GregTech");
-		if (!DirectoriesGT.CONFIG_GT.exists()) DirectoriesGT.CONFIG_GT = new File(DirectoriesGT.CONFIG, "gregtech");
-		
-		DirectoriesGT.CONFIG_RECIPES = new File(DirectoriesGT.CONFIG, "Recipes");
-		if (!DirectoriesGT.CONFIG_RECIPES.exists()) DirectoriesGT.CONFIG_RECIPES = new File(DirectoriesGT.CONFIG, "recipes");
-		
+		DirectoriesGT.CONFIG_GT = new File(DirectoriesGT.CONFIG, "gregtech");
+		DirectoriesGT.CONFIG_LANG = new File(DirectoriesGT.CONFIG_GT, "lang");
+		DirectoriesGT.CONFIG_RECIPES = new File(DirectoriesGT.CONFIG, "recipes");
 		DirectoriesGT.MINECRAFT = DirectoriesGT.CONFIG.getParentFile();
-		
 		DirectoriesGT.LOGS = new File(DirectoriesGT.MINECRAFT, "logs");
 		
 		onModPreInit(aEvent);
@@ -299,9 +294,6 @@ public class GT_API extends Abstract_Mod {
 		ConfigsGT.WORLDGEN_GT5  = new Config("old_barely_used_gt5_style_garbage_worldgen.cfg");
 		ConfigsGT.MATERIAL      = new Config("Materials.cfg");
 		ConfigsGT.OREPROCESSING = new Config("OreProcessing.cfg");
-		// Deprecated Config Files.
-		ConfigsGT.OVERPOWERED = ConfigsGT.MACHINES = ConfigsGT.SPECIAL = ConfigsGT.GREGTECH;
-		
 		
 		tFile = new File(DirectoriesGT.CONFIG_GT, "Stacksizes.cfg");
 		if (!tFile.exists()) tFile = new File(DirectoriesGT.CONFIG_GT, "stacksizes.cfg");
@@ -356,7 +348,7 @@ public class GT_API extends Abstract_Mod {
 			try {mPlayerLogger = new LoggerPlayerActivity(new PrintStream(tFile));} catch (Throwable e) {/**/}
 		}
 		
-		ConfigsGT.CLIENT = new Config(DirectoriesGT.MINECRAFT, "GregTech.cfg");
+		ConfigsGT.CLIENT = new Config(DirectoriesGT.CONFIG_GT, "client.cfg");
 		
 		D1                        = ConfigsGT.CLIENT.get(ConfigCategories.debug  , "logs"               , F);
 		D2                        = ConfigsGT.CLIENT.get(ConfigCategories.debug  , "oredict"            , F);
@@ -712,10 +704,15 @@ public class GT_API extends Abstract_Mod {
 		GameRegistry.registerTileEntity(PrefixBlockTileEntity.class, "gt.MetaBlockTileEntity");
 		// Creating and loading the Lang File.
 		if (CODE_CLIENT) {
-			tFile = new File(DirectoriesGT.MINECRAFT, "GregTech.lang");
-			if (!tFile.exists()) tFile = new File(DirectoriesGT.MINECRAFT, "gregtech.lang");
+			tFile = new File(DirectoriesGT.CONFIG_LANG, FMLCommonHandler.instance().getCurrentLanguage()+".lang");
+			if (!tFile.exists()) {
+				tFile = new File(DirectoriesGT.CONFIG_LANG, "en_US.lang");
+			}
 			LanguageHandler.sLangFile = new Configuration(tFile);
 			LanguageHandler.sUseFile = LanguageHandler.sLangFile.get("EnableLangFile", "UseThisFileAsLanguageFile", F).getBoolean(F);
+			if (LanguageHandler.sUseFile) {
+				LanguageHandler.sLangFileLanguage = FMLCommonHandler.instance().getCurrentLanguage();
+			}
 		} else {
 			sBlockIconload.clear();
 			sBlockIconload = null;

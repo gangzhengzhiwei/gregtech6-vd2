@@ -2,6 +2,8 @@ This is the most recent Changelog. It also contains some of the changes inside t
 
 6.0.4-vd2: (Not released yet)
 [CHANGED] Crucibles heat loss now only depends on temperature difference.
+[CHANGED] gregtech.cfg in version folder is now obsoleted, it has been moved to config/gregtech/client.cfg
+[CHANGED] Now you can put your language file in config/gregtech/lang. Still, you need to restart game after change language.
 
 6.0.3-vd2: Original gregtech-6.17.07
 [FIXED] I accidentally disabled the dye fiber. Now it is force generated.

@@ -1915,7 +1915,8 @@ public class CS {
 		LOGS,
 		CONFIG,
 		CONFIG_GT,
-		CONFIG_RECIPES;
+		CONFIG_RECIPES,
+		CONFIG_LANG;
 	}
 	
 	/** Configs */
@@ -1928,8 +1929,6 @@ public class CS {
 		WORLDGEN_GT5,
 		MATERIAL,
 		OREPROCESSING;
-		
-		@Deprecated public static Config SPECIAL, MACHINES, OVERPOWERED;
 	}
 	
 	/** Class Containing MOD ID Strings used in GT, since they are very common Parameters. */
