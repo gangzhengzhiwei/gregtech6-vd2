@@ -82,7 +82,11 @@ public class MultiTileEntitySmeltery extends TileEntityBase07Paintable implement
 	protected short mDisplayedFluid = -1, oDisplayedFluid = -1;
 	protected long mEnergy = 0, mTemperature = DEF_ENV_TEMP, oTemperature = 0;
 	protected List<OreDictMaterialStack> mContent = new ArrayListNoNulls<>();
-	
+
+	public List<OreDictMaterialStack> getContent() {
+		return mContent;
+	}
+
 	@Override
 	public void readFromNBT2(NBTTagCompound aNBT) {
 		super.readFromNBT2(aNBT);
@@ -298,12 +302,12 @@ public class MultiTileEntitySmeltery extends TileEntityBase07Paintable implement
 		mDisplayedHeight = (byte)UT.Code.scale(tTotal, MAX_AMOUNT, 255, F);
 		mDisplayedFluid = (tLightest == null || tLightest.mMaterial.mMeltingPoint > mTemperature ? -1 : tLightest.mMaterial.mID);
 
-		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tHeatLoss = Math.round((double)(mTemperature - tTemperature) / 175), tConversions;
+		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tHeatLoss = Math.round((double)(mTemperature - tTemperature) * HEAT_LOSS_FACTOR / 175), tConversions;
 		if (mTemperature != tTemperature && tHeatLoss == 0) {
 			if (mTemperature - tTemperature > 0) tHeatLoss = 1;
 			else tHeatLoss = -1;
 		}
-		mEnergy -= HEAT_LOSS_FACTOR * tHeatLoss;
+		mEnergy -= tHeatLoss;
 		tConversions = mEnergy / tRequiredEnergy;
 		mEnergy -= tConversions * tRequiredEnergy;
 		mTemperature += tConversions;

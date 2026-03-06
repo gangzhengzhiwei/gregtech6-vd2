@@ -1,5 +1,9 @@
 This is the most recent Changelog. It also contains some of the changes inside the >>>UPCOMING<<< Versions (most of the time). This is for 1.7.10 btw.
 
+6.0.5-vd2:
+[FIXED] The crucible heat loss is more smooth.
+[ADDED] Waila Compat, in WIP.
+
 6.0.4-vd2:
 [ADDED] Print_Missing_I18n_Key config in client.cfg, default is false. Gregtech will print missing i18n key of language file in gregtech.log.
 [CHANGED] Crucibles heat loss now only depends on temperature difference.

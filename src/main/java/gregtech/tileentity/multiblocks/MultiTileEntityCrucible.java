@@ -86,7 +86,11 @@ public class MultiTileEntityCrucible extends TileEntityBase10MultiBlockBase impl
 	protected List<OreDictMaterialStack> mContent = new ArrayListNoNulls<>();
 	
 	public short mWalls = 18002;
-	
+
+	public List<OreDictMaterialStack> getContent() {
+		return mContent;
+	}
+
 	@Override
 	public void readFromNBT2(NBTTagCompound aNBT) {
 		super.readFromNBT2(aNBT);
@@ -350,12 +354,12 @@ public class MultiTileEntityCrucible extends TileEntityBase10MultiBlockBase impl
 		mDisplayedFluid = (tLightest == null || tLightest.mMaterial.mMeltingPoint > mTemperature ? -1 : tLightest.mMaterial.mID);
 		if (mDisplayedFluid != tDisplayedFluid || mDisplayedHeight != tDisplayedHeight) updateClientData();
 
-		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tHeatLoss = Math.round((double)(mTemperature - tTemperature) / 175), tConversions;
+		long tRequiredEnergy = 1 + (long)(tWeight / KG_PER_ENERGY), tHeatLoss = Math.round((double)(mTemperature - tTemperature) * HEAT_LOSS_FACTOR / 175), tConversions;
 		if (mTemperature != tTemperature && tHeatLoss == 0) {
 			if (mTemperature - tTemperature > 0) tHeatLoss = 1;
 			else tHeatLoss = -1;
 		}
-		mEnergy -= HEAT_LOSS_FACTOR * tHeatLoss;
+		mEnergy -= tHeatLoss;
 		tConversions = mEnergy / tRequiredEnergy;
 		mEnergy -= tConversions * tRequiredEnergy;
 		mTemperature += tConversions;

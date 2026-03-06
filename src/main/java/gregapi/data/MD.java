@@ -291,5 +291,6 @@ public class MD {
 	, MD8               = new ModData(ModIDs.MD8                , "Micdoodle8 Core")
 	
 	, EC3               = new ModData("essentialcraft"          , "EssentialCraft")
+	, WAILA             = new ModData(ModIDs.WAILA              , "Waila")
 	;
 }
