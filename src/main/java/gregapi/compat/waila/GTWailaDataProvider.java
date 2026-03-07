@@ -1,6 +1,9 @@
-package gregtech.compat.waila;
+package gregapi.compat.waila;
 
+import gregapi.compat.waila.multiblock.WailaMultiBlockCrucible;
+import gregapi.compat.waila.multiblock.WailaMultiBlockPart;
 import gregapi.data.CS;
+import gregapi.tileentity.multiblocks.MultiTileEntityMultiBlockPart;
 import gregtech.tileentity.multiblocks.MultiTileEntityCrucible;
 import gregtech.tileentity.tools.MultiTileEntitySmeltery;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -15,6 +18,9 @@ import net.minecraft.world.World;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+
+import static gregapi.compat.waila.GTWailaUtils.NBT_WAILA_ENABLED;
+import static gregapi.data.CS.T;
 
 public class GTWailaDataProvider implements IWailaDataProvider {
     public static HashMap<Class, GTWailaBodyBase> mTileEntityMap = new HashMap<>();
@@ -31,9 +37,11 @@ public class GTWailaDataProvider implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        TileEntity tileEntity = accessor.getTileEntity();
-        if (!mTileEntityList.contains(tileEntity.getClass())) return currenttip;
-        return mTileEntityMap.get(tileEntity.getClass()).getWailaBody(itemStack, currenttip, accessor, config);
+        if (!accessor.getNBTData().getBoolean(NBT_WAILA_ENABLED)) return currenttip; //Waila compat is not enabled on server
+        GTWailaBodyBase tBase = getWailaBodyBase(accessor.getTileEntity());
+        if (tBase == null) return currenttip;
+        tBase.getWailaBody(itemStack, currenttip, accessor, config);
+        return currenttip;
     }
 
     @Override
@@ -43,16 +51,25 @@ public class GTWailaDataProvider implements IWailaDataProvider {
 
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
-        if (!mTileEntityList.contains(te.getClass())) return tag;
-        return mTileEntityMap.get(te.getClass()).getNBTData(player, te, tag, world, x, y, z);
+        GTWailaBodyBase tBase = getWailaBodyBase(te);
+        if (tBase == null) return tag;
+        tBase.getNBTData(player, te, tag, world, x, y, z);
+        tag.setBoolean(NBT_WAILA_ENABLED, T); //Server enabled waila compat
+        return tag;
     }
     public static void registerBody(Class aTileEntity, GTWailaBodyBase aBase) {
         mTileEntityMap.put(aTileEntity, aBase);
         mTileEntityList.add(aTileEntity);
     }
+    public static GTWailaBodyBase getWailaBodyBase(TileEntity aTileEntity) {
+        if (!mTileEntityList.contains(aTileEntity.getClass())) return null;
+        return mTileEntityMap.get(aTileEntity.getClass());
+    }
     static {
         try{
             registerBody(MultiTileEntitySmeltery.class, new WailaSmeltery());
+
+            registerBody(MultiTileEntityMultiBlockPart.class, new WailaMultiBlockPart());
             registerBody(MultiTileEntityCrucible.class, new WailaMultiBlockCrucible());
         } catch (Exception e) {
             e.printStackTrace();

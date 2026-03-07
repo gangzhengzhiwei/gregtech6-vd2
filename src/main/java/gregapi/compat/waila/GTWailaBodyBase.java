@@ -1,4 +1,4 @@
-package gregtech.compat.waila;
+package gregapi.compat.waila;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;

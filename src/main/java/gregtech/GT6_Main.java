@@ -51,7 +51,6 @@ import gregtech.blocks.fluids.BlockOcean;
 import gregtech.blocks.fluids.BlockRiver;
 import gregtech.blocks.fluids.BlockSwamp;
 import gregtech.compat.*;
-import gregtech.compat.waila.CompatWaila;
 import gregtech.entities.projectiles.EntityArrow_Material;
 import gregtech.entities.projectiles.EntityArrow_Potion;
 import gregtech.items.tools.early.GT_Tool_Scoop;
@@ -117,7 +116,7 @@ public class GT6_Main extends Abstract_Mod {
 		BlockOcean.FLOWS_OUT             = ConfigsGT.GREGTECH.get("general", "OceanBlocksFlowOutFar" , F);
 		BlockSwamp.FLOWS_OUT             = ConfigsGT.GREGTECH.get("general", "SwampBlocksFlowOutFar" , F);
 		BlockRiver.FLOWS_OUT             = ConfigsGT.GREGTECH.get("general", "RiverBlocksFlowOutFar" , F);
-		
+
 		if (COMPAT_IC2 != null && !MD.IC2C.mLoaded) {
 			OUT.println(getModNameForLog() + ": Removing all original Scrapbox Drops.");
 			try {
@@ -264,7 +263,6 @@ public class GT6_Main extends Abstract_Mod {
 		new Compat_Recipes_ActuallyAdditions    (MD.AA            , this);
 		new Compat_Recipes_ExtraUtilities       (MD.ExU           , this);
 		new Compat_Recipes_WRCBE                (MD.WR_CBE_C      , this);
-		new CompatWaila                         (MD.WAILA         , this);
 		
 		new CompatMods(MD.GT, this) {@Override public void onPostLoad(FMLPostInitializationEvent aInitEvent) {
 			ArrayListNoNulls<Runnable> tList = new ArrayListNoNulls<>(F,

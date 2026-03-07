@@ -1,6 +1,7 @@
-package gregtech.compat.waila;
+package gregapi.compat.waila;
 
 import gregapi.oredict.OreDictMaterialStack;
+import gregapi.util.ST;
 import gregapi.util.UT;
 import gregapi.util.WD;
 import gregtech.tileentity.tools.MultiTileEntitySmeltery;
@@ -18,12 +19,15 @@ import java.util.List;
 import static gregapi.data.CS.*;
 
 public class WailaSmeltery extends GTWailaBodyBase{
+
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP aPlayer, TileEntity aTileEntity, NBTTagCompound aNBT, World aWorld, int aX, int aY, int aZ) {
         super.getNBTData(aPlayer, aTileEntity, aNBT, aWorld, aX, aY, aZ);
         MultiTileEntitySmeltery tSmeltery = (MultiTileEntitySmeltery) aTileEntity;
         UT.NBT.setNumber(aNBT, NBT_TEMPERATURE, tSmeltery.getTemperatureValue(SIDE_INSIDE));
         OreDictMaterialStack.saveList(NBT_MATERIALS, aNBT, tSmeltery.getContent());
+
+        if (ST.valid(tSmeltery.slot(0))) aNBT.setTag("s", ST.save(tSmeltery.slot(0))); //hidden itemstack
         return aNBT;
     }
 
@@ -35,15 +39,20 @@ public class WailaSmeltery extends GTWailaBodyBase{
         List<OreDictMaterialStack> tStackList = OreDictMaterialStack.loadList(NBT_MATERIALS, tNBT);
         MultiTileEntitySmeltery tSmeltery = (MultiTileEntitySmeltery) aAccessor.getTileEntity();
 
-        aCurrentTip.add(String.format("Temperature: %d / %d K", tTemperature, tSmeltery.getTemperatureMax(SIDE_INSIDE)));
-        StringBuilder tBuilder = new StringBuilder("Content: ");
+        aCurrentTip.add(String.format("Temperature:§f %d / %d §bK", tTemperature, tSmeltery.getTemperatureMax(SIDE_INSIDE)));
+        StringBuilder tBuilder = new StringBuilder("Content:§f ");
         long tAmount = 0;
         for (OreDictMaterialStack tStack : tStackList) {
-            tBuilder.append(String.format("%s Unit %s",GTWailaUtils.DF1.format((double)tStack.mAmount/U) ,tStack.mMaterial.getLocal()));
+            tBuilder.append(String.format("%s §bUnit §f%s",GTWailaUtils.DF1.format((double)tStack.mAmount/U) ,tStack.mMaterial.getLocal()));
             tAmount += tStack.mAmount;
         }
         if (!tStackList.isEmpty()) aCurrentTip.add(tBuilder.toString());
-        aCurrentTip.add(String.format("Total: %s / %d Unit", GTWailaUtils.DF1.format((double)tAmount/U), 16));
+        aCurrentTip.add(String.format("Total:§f %s / %d §bUnit", GTWailaUtils.DF1.format((double)tAmount/U), 16));
+
+        if (tNBT.hasKey("s")) {
+            ItemStack tHiddenStack = ST.load(tNBT.getCompoundTag("s"));
+            aCurrentTip.add(String.format("Hidden item:§f %s %s", tHiddenStack.stackSize, tHiddenStack.getDisplayName()));
+        }
 
         MovingObjectPosition tPos = aAccessor.getPosition();
         long tEnvTemperature = WD.envTemp(aAccessor.getWorld(), tPos.blockX, tPos.blockY, tPos.blockZ), tHeatLoss = Math.round((double) (tTemperature - tEnvTemperature) * MultiTileEntitySmeltery.HEAT_LOSS_FACTOR / 175);
@@ -51,7 +60,7 @@ public class WailaSmeltery extends GTWailaBodyBase{
             if (tTemperature > tEnvTemperature) tHeatLoss = 1;
             else tHeatLoss = -1;
         }
-        if (tHeatLoss != 0) aCurrentTip.add(String.format("Heat loss: %d GU/t", tHeatLoss));
+        if (tHeatLoss != 0) aCurrentTip.add(String.format("Heat loss:§f %d §bGU/t", tHeatLoss));
         return aCurrentTip;
     }
 }
