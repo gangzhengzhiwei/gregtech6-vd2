@@ -1,6 +1,7 @@
 package gregapi.compat.waila.multiblock;
 
 import gregapi.compat.waila.GTWailaUtils;
+import gregapi.data.LH;
 import gregapi.oredict.OreDictMaterialStack;
 import gregapi.util.ST;
 import gregapi.util.UT;
@@ -30,19 +31,19 @@ public class WailaMultiBlockCrucible extends WailaMultiBlockBase {
         List<OreDictMaterialStack> tStackList = OreDictMaterialStack.loadList(NBT_MATERIALS, tNBT);
         MultiTileEntityCrucible tCrucible = (MultiTileEntityCrucible) aAccessor.getTileEntity();
 
-        aCurrentTip.add(String.format("Temperature:§f %d / %d §bK", tTemperature, tCrucible.getTemperatureMax(SIDE_INSIDE)));
-        StringBuilder tBuilder = new StringBuilder("Content:§f ");
+        aCurrentTip.add(LH.format("gt.waila.smeltery.0", tTemperature, tCrucible.getTemperatureMax(SIDE_INSIDE)));
+        StringBuilder tBuilder = new StringBuilder(LH.get("gt.waila.smeltery.1"));
         long tAmount = 0;
         for (OreDictMaterialStack tStack : tStackList) {
-            tBuilder.append(String.format("%s §bUnit §f%s", GTWailaUtils.DF1.format((double)tStack.mAmount/U) ,tStack.mMaterial.getLocal()));
+            tBuilder.append(LH.format("gt.waila.smeltery.2", GTWailaUtils.DF1.format((double)tStack.mAmount/U) ,tStack.mMaterial.getLocal()));
             tAmount += tStack.mAmount;
         }
         if (!tStackList.isEmpty()) aCurrentTip.add(tBuilder.toString());
-        aCurrentTip.add(String.format("Total:§f %s / %d §bUnit", GTWailaUtils.DF1.format((double)tAmount/U), 16*3*3*3));
+        aCurrentTip.add(LH.format("gt.waila.smeltery.3", GTWailaUtils.DF1.format((double)tAmount/U), 16*3*3*3));
 
         if (tNBT.hasKey("s")) {
             ItemStack tHiddenStack = ST.load(tNBT.getCompoundTag("s"));
-            aCurrentTip.add(String.format("Hidden item:§f %s %s", tHiddenStack.stackSize, tHiddenStack.getDisplayName()));
+            aCurrentTip.add(LH.format("gt.waila.smeltery.4", tHiddenStack.stackSize, tHiddenStack.getDisplayName()));
         }
 
         MovingObjectPosition tPos = aAccessor.getPosition();
@@ -51,7 +52,7 @@ public class WailaMultiBlockCrucible extends WailaMultiBlockBase {
             if (tTemperature > tEnvTemperature) tHeatLoss = 1;
             else tHeatLoss = -1;
         }
-        if (tHeatLoss != 0) aCurrentTip.add(String.format("Heat loss:§f %d §bGU/t", tHeatLoss));
+        if (tHeatLoss != 0) aCurrentTip.add(LH.format("gt.waila.smeltery.5", tHeatLoss));
         return aCurrentTip;
     }
 

@@ -5,6 +5,9 @@ import gregapi.compat.waila.multiblock.WailaMultiBlockPart;
 import gregapi.data.CS;
 import gregapi.tileentity.multiblocks.MultiTileEntityMultiBlockPart;
 import gregtech.tileentity.multiblocks.MultiTileEntityCrucible;
+import gregtech.tileentity.tanks.MultiTileEntityBarrelMetal;
+import gregtech.tileentity.tanks.MultiTileEntityBarrelPlastic;
+import gregtech.tileentity.tanks.MultiTileEntityBarrelWood;
 import gregtech.tileentity.tools.MultiTileEntitySmeltery;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -23,8 +26,8 @@ import static gregapi.compat.waila.GTWailaUtils.NBT_WAILA_ENABLED;
 import static gregapi.data.CS.T;
 
 public class GTWailaDataProvider implements IWailaDataProvider {
-    public static HashMap<Class, GTWailaBodyBase> mTileEntityMap = new HashMap<>();
-    public static HashSet<Class> mTileEntityList = new HashSet<>();
+    public static HashMap<Class<? extends TileEntity>, GTWailaBodyBase> mTileEntityMap = new HashMap<>();
+    public static HashSet<Class<? extends TileEntity>> mTileEntityList = new HashSet<>();
     @Override
     public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
         return null;
@@ -57,9 +60,18 @@ public class GTWailaDataProvider implements IWailaDataProvider {
         tag.setBoolean(NBT_WAILA_ENABLED, T); //Server enabled waila compat
         return tag;
     }
-    public static void registerBody(Class aTileEntity, GTWailaBodyBase aBase) {
-        mTileEntityMap.put(aTileEntity, aBase);
-        mTileEntityList.add(aTileEntity);
+    @SafeVarargs
+    public static void registerBody(Class<? extends GTWailaBodyBase> aBase, Class<? extends TileEntity>... aTileEntities) {
+        try{
+            GTWailaBodyBase tBaseInstance = aBase.newInstance();
+            for (Class<? extends TileEntity> tTileEntity : aTileEntities) {
+                mTileEntityList.add(tTileEntity);
+                mTileEntityMap.put(tTileEntity, tBaseInstance);
+            }
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            CS.ERR.println(e);
+        }
     }
     public static GTWailaBodyBase getWailaBodyBase(TileEntity aTileEntity) {
         if (!mTileEntityList.contains(aTileEntity.getClass())) return null;
@@ -67,10 +79,11 @@ public class GTWailaDataProvider implements IWailaDataProvider {
     }
     static {
         try{
-            registerBody(MultiTileEntitySmeltery.class, new WailaSmeltery());
+            registerBody(WailaSmeltery.class, MultiTileEntitySmeltery.class);
+            registerBody(WailaBarrel.class, MultiTileEntityBarrelPlastic.class, MultiTileEntityBarrelMetal.class, MultiTileEntityBarrelWood.class);
 
-            registerBody(MultiTileEntityMultiBlockPart.class, new WailaMultiBlockPart());
-            registerBody(MultiTileEntityCrucible.class, new WailaMultiBlockCrucible());
+            registerBody(WailaMultiBlockPart.class, MultiTileEntityMultiBlockPart.class);
+            registerBody(WailaMultiBlockCrucible.class, MultiTileEntityCrucible.class);
         } catch (Exception e) {
             e.printStackTrace();
             CS.ERR.println(e);

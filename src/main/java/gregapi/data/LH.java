@@ -263,6 +263,7 @@ public class LH {
 	, WIP = "gt.lang.work.in.progress"
 	;
 	
+	public static String format(String aKey, Object... args) {return String.format(LanguageHandler.translate(aKey), args);}
 	public static String add(String aKey, String aEnglish) {LanguageHandler.add(aKey, aEnglish); return aKey;}
 	public static String get(String aKey) {return LanguageHandler.translate(aKey);}
 	public static String get(String aKey, String aDefault) {return LanguageHandler.translate(aKey, aDefault);}
@@ -653,6 +654,17 @@ public class LH {
 		add(TIME_WEEKS                                  , "Weeks");
 		add(ADMIN_ONLY_CREATION                         , "Admins have to spawn this in. (or you MineTweaker a Recipe in)");
 		add(WIP                                         , Chat.RESET + Chat.WHITE + Chat.BOLD + "WIP" + Chat.RESET_TOOLTIP + ", This may not be as functional as you expect it to be!");
+
+		add("gt.waila.barrel.0", "Contain: §f%d §bL §f%s");
+		add("gt.waila.barrel.1", "Auto output: §bEnabled");
+		add("gt.waila.barrel.2", "Auto output: §cDisabled");
+		add("gt.waila.smeltery.0", "Temperature:§f %d / %d §bK");
+		add("gt.waila.smeltery.1", "Content:§f ");
+		add("gt.waila.smeltery.2", "%s §bUnit §f%s");
+		add("gt.waila.smeltery.3", "Total:§f %s / %d §bUnit");
+		add("gt.waila.smeltery.4", "Hidden item:§f %s %s");
+		add("gt.waila.smeltery.5", "Heat loss:§f %d §bGU/t");
+		add("gt.waila.multiblock.0", "§cStructure not Formed");
 	}
 	
 	public static class Chat {
