@@ -3,6 +3,7 @@ package gregapi.compat.waila;
 import gregapi.compat.waila.multiblock.WailaMultiBlockCrucible;
 import gregapi.compat.waila.multiblock.WailaMultiBlockPart;
 import gregapi.data.CS;
+import gregapi.tileentity.connectors.MultiTileEntityPipeFluid;
 import gregapi.tileentity.multiblocks.MultiTileEntityMultiBlockPart;
 import gregtech.tileentity.multiblocks.MultiTileEntityCrucible;
 import gregtech.tileentity.tanks.MultiTileEntityBarrelMetal;
@@ -69,8 +70,7 @@ public class GTWailaDataProvider implements IWailaDataProvider {
                 mTileEntityMap.put(tTileEntity, tBaseInstance);
             }
         } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-            CS.ERR.println(e);
+            e.printStackTrace(CS.ERR);
         }
     }
     public static GTWailaBodyBase getWailaBodyBase(TileEntity aTileEntity) {
@@ -81,12 +81,12 @@ public class GTWailaDataProvider implements IWailaDataProvider {
         try{
             registerBody(WailaSmeltery.class, MultiTileEntitySmeltery.class);
             registerBody(WailaBarrel.class, MultiTileEntityBarrelPlastic.class, MultiTileEntityBarrelMetal.class, MultiTileEntityBarrelWood.class);
+            registerBody(WailaPipeFluid.class, MultiTileEntityPipeFluid.class);
 
             registerBody(WailaMultiBlockPart.class, MultiTileEntityMultiBlockPart.class);
             registerBody(WailaMultiBlockCrucible.class, MultiTileEntityCrucible.class);
         } catch (Exception e) {
-            e.printStackTrace();
-            CS.ERR.println(e);
+            e.printStackTrace(CS.ERR);
             throw e;
         }
     }

@@ -44,6 +44,7 @@ import gregapi.compat.industrialcraft.ICompatIC2;
 import gregapi.compat.industrialcraft.ICompatIC2EUItem;
 import gregapi.compat.opencomputers.ICompatOC;
 import gregapi.compat.thaumcraft.ICompatTC;
+import gregapi.compat.waila.GTWailaUtils;
 import gregapi.compat.warpdrive.ICompatWD;
 import gregapi.config.Config;
 import gregapi.config.ConfigCategories;
@@ -131,6 +132,9 @@ public class GT_API extends Abstract_Mod {
 		MT.init();
 		BI.BAROMETER.toString();
 		OP.ore.toString();
+
+		//Make sure waila compat i18n key add
+		new GTWailaUtils();
 		
 		// Make sure Icons are initialized.
 		Textures.BlockIcons.VOID.toString();

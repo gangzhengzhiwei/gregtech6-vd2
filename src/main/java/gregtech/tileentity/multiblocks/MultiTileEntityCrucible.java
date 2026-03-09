@@ -76,7 +76,7 @@ import static gregapi.data.CS.*;
  */
 public class MultiTileEntityCrucible extends TileEntityBase10MultiBlockBase implements ITileEntityCrucible, ITileEntityEnergy, ITileEntityGibbl, ITileEntityWeight, ITileEntityTemperature, ITileEntityMold, ITileEntityServerTickPost, ITileEntityEnergyDataCapacitor, IMultiBlockEnergy, IMultiBlockInventory, IMultiBlockFluidHandler, IFluidHandler {
 	public static int GAS_RANGE = 5, FLAME_RANGE = 5;
-	public static long MAX_AMOUNT = 16*3*3*3*U, KG_PER_ENERGY = 100, HEAT_LOSS_FACTOR = 8;
+	public static long MAX_AMOUNT = 16*3*3*3*U, KG_PER_ENERGY = 100, HEAT_LOSS_FACTOR = 16;
 	public static double HEAT_RESISTANCE_BONUS = 1.10;
 	
 	protected boolean mAcidProof = F, mMeltDown = F;

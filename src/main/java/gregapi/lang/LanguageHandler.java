@@ -51,7 +51,7 @@ public class LanguageHandler {
 	private static boolean mWritingEnabled = F;
 	
 	public static void save() {
-		if (sLangFile != null) {
+		if (sLangFile != null && !sUseFile) { //If we use file, we do not expect to modify the file
 			mWritingEnabled = T;
 			sLangFile.save();
 		}

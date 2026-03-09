@@ -17,7 +17,6 @@ import java.util.List;
 import static gregapi.data.CS.*;
 
 public class WailaBarrel extends GTWailaBodyBase{
-    private static final FluidTankGT tTank = new FluidTankGT();
     @Override
     public NBTTagCompound getNBTData(EntityPlayerMP aPlayer, TileEntity aTileEntity, NBTTagCompound aNBT, World aWorld, int aX, int aY, int aZ) {
         super.getNBTData(aPlayer, aTileEntity, aNBT, aWorld, aX, aY, aZ);
@@ -32,11 +31,12 @@ public class WailaBarrel extends GTWailaBodyBase{
         super.getWailaBody(aItemStack, aCurrentTip, aAccessor, aConfig);
         NBTTagCompound tNBT = aAccessor.getNBTData();
         byte mMode = tNBT.getByte(NBT_MODE);
-        tTank.readFromNBT(aAccessor.getNBTData(), NBT_TANK);
+        FluidTankGT tTank = new FluidTankGT();
+        tTank.readFromNBT(tNBT, NBT_TANK);
         if (!tTank.isEmpty()) {
-            aCurrentTip.add(LH.format("gt.waila.barrel.0", tTank.amount(), FL.name(tTank, T)));
+            aCurrentTip.add(LH.format("gt.waila.barrel.0", GTWailaUtils.getFluidTankGTTip(tTank)));
         }
-        aCurrentTip.add(mMode == 0 ? LH.get("gt.waila.barrel.1"):LH.get("gt.waila.barrel.2"));
+        aCurrentTip.add((mMode & B[0]) == 0 ? LH.get("gt.waila.barrel.1"):LH.get("gt.waila.barrel.2"));
         return aCurrentTip;
     }
 }
